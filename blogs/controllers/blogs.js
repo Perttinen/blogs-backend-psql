@@ -13,37 +13,26 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
-  try {
     const blog = await Blog.create(req.body)
     res.json(blog)
-  } catch(error) {
-    return res.status(400).json({ error })
-  }
 })
 
-router.get('/:id', blogFinder, async (req, res) => {
-  if (req.blog) {
-    res.json(req.blog)
-  } else {
-    res.status(404).end()
-  }
+router.get('/:id',blogFinder, async (req, res) => {
+  if (!req.blog) throw Error(`No blog with id: ${req.params.id}`)
+  res.json(req.blog)
 })
 
 router.delete('/:id',blogFinder, async (req, res) => {
-  if (req.blog) {
-    await req.blog.destroy()
-  }
+  if (!req.blog) throw Error(`No blog with id: ${req.params.id}`)
+  await req.blog.destroy()
   res.status(204).end()
 })
 
 router.put('/:id',blogFinder, async (req, res) => {
-  if (req.blog) {
-    req.blog.likes = req.body.likes
-    await req.blog.save()
-    res.json(req.blog)
-  } else {
-    res.status(404).end()
-  }
+  if (!req.blog) throw Error(`No blog with id: ${req.params.id}`)
+  req.blog.likes = req.body.likes
+  await req.blog.save()
+  res.json(req.blog)
 })
 
 module.exports = router
