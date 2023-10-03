@@ -6,7 +6,7 @@ router.get('/', async (req, res) => {
   const users = await BlogUser.findAll({
     include: {
       model: Blog,
-      attributes: {exclude: ['userId']}
+      attributes: {exclude: ['blogUserId']}
     }
   })
   res.json(users)
@@ -35,6 +35,12 @@ router.put('/:username', async (req,res) => {
   } else {
     res.status(404).end()
   }
+})
+
+router.delete('/:id', async (req,res) => {
+  const user = await BlogUser.findByPk(req.params.id)
+  await user.destroy()
+  res.status(204).end()
 })
 
 module.exports = router

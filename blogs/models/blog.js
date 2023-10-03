@@ -19,7 +19,7 @@ Blog.init({
   },
   likes: {
     type: DataTypes.INTEGER,
-    defaulValue: 0
+    defaultValue: 0
   },
   title: {
     type: DataTypes.TEXT,
