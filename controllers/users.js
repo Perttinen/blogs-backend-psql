@@ -1,24 +1,24 @@
 const router = require('express').Router()
 
-const { BlogUser, Blog } = require('../models')
+const { User, Blog } = require('../models')
 
 router.get('/', async (req, res) => {
-  const users = await BlogUser.findAll({
+  const users = await User.findAll({
     include: {
       model: Blog,
-      attributes: {exclude: ['blogUserId']}
+      attributes: {exclude: ['userId']}
     }
   })
   res.json(users)
 })
 
 router.post('/', async (req, res) => {
-    const user = await BlogUser.create(req.body)
+    const user = await User.create(req.body)
     res.json(user)
 })
 
 router.get('/:id', async (req, res) => {
-  const user = await BlogUser.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id)
   if (user) {
     res.json(user)
   } else {
@@ -27,7 +27,7 @@ router.get('/:id', async (req, res) => {
 })
 
 router.put('/:username', async (req,res) => {
-  const user = await BlogUser.findOne({where: {username: req.params.username}})
+  const user = await User.findOne({where: {username: req.params.username}})
   if (user) {
     user.username = req.body.username
     await user.save()
@@ -38,7 +38,7 @@ router.put('/:username', async (req,res) => {
 })
 
 router.delete('/:id', async (req,res) => {
-  const user = await BlogUser.findByPk(req.params.id)
+  const user = await User.findByPk(req.params.id)
   await user.destroy()
   res.status(204).end()
 })

@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { Op } = require('sequelize')
 
-const { Blog, BlogUser } = require('../models')
+const { Blog, User } = require('../models')
 
 const jwt = require('jsonwebtoken')
 const { SECRET } = require('../util/config')
@@ -40,7 +40,7 @@ router.get('/', async (req, res) => {
     attributes:{
       exclude: ['blogUserId']},
       include: {
-        model: BlogUser,
+        model: User,
         attributes: ['name']
       },
       order: [
@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/',tokenExtractor, async (req, res) => {
-    const user = await BlogUser.findByPk(req.decodedToken.id)
+    const user = await User.findByPk(req.decodedToken.id)
     const blog = await Blog.create({...req.body, blogUserId: user.id, date: new Date()})
     res.json(blog)
 })
@@ -64,7 +64,7 @@ router.get('/:id',blogFinder, async (req, res) => {
 
 router.delete('/:id', blogFinder, tokenExtractor, async (req, res) => {
   const blog = await Blog.findByPk(req.params.id)
-  if(req.decodedToken.id === blog.blogUserId){
+  if(req.decodedToken.id === blog.userId){
     await req.blog.destroy()
     res.status(204).end()
   }else {
