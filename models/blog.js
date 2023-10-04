@@ -11,10 +11,10 @@ Blog.init({
     autoIncrement: true
   },
   author: {
-    type: DataTypes.TEXT
+    type: DataTypes.STRING
   },
   url: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false
   },
   likes: {
@@ -22,9 +22,13 @@ Blog.init({
     defaultValue: 0
   },
   title: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false
-  }
+  },
+  // user_id: {
+  //   type: DataTypes.INTEGER,
+  //   allowNull: false
+  // },
 }, {
   sequelize,
   underscored: true,

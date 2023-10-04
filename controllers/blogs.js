@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
   const blogs = await Blog.findAll(
     {
     attributes:{
-      exclude: ['blogUserId']},
+      exclude: ['userId']},
       include: {
         model: User,
         attributes: ['name']
@@ -54,7 +54,9 @@ router.get('/', async (req, res) => {
 
 router.post('/',tokenExtractor, async (req, res) => {
     const user = await User.findByPk(req.decodedToken.id)
-    const blog = await Blog.create({...req.body, blogUserId: user.id, date: new Date()})
+    console.log(user.id);
+    console.log({...req.body, userId: user.id});
+    const blog = await Blog.create({...req.body ,userId: user.id})
     res.json(blog)
 })
 

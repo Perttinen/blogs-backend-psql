@@ -24,7 +24,7 @@ User.init({
   sequelize,
   underscored: true,
   timestamps: true,
-  modelName: 'blogUser'
+  modelName: 'user'
 })
 
 module.exports = User

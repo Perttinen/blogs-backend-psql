@@ -13,8 +13,12 @@ router.get('/', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  try{
     const user = await User.create(req.body)
     res.json(user)
+  }catch(e){
+    return res.status(400).json({e})
+  }
 })
 
 router.get('/:id', async (req, res) => {
