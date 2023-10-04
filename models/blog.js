@@ -25,10 +25,19 @@ Blog.init({
     type: DataTypes.STRING,
     allowNull: false
   },
-  // user_id: {
-  //   type: DataTypes.INTEGER,
-  //   allowNull: false
-  // },
+  year: {
+    type: DataTypes.INTEGER,
+    validate: {
+      min: {
+        args: [1991],
+        msg: 'Year should be an integer between 1991 and the current year'
+      },
+      max: {
+        args: [new Date().getFullYear()],
+        msg: 'Year should be an integer between 1991 and the current year'
+      }
+    }
+  },
 }, {
   sequelize,
   underscored: true,
