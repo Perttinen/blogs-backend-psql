@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { User, Blog, Readinglist } = require('../models')
+const { User, Blog, Readinglist, Session } = require('../models')
 
 router.get('/', async (req, res) => {
   const users = await User.findAll(
@@ -55,6 +55,20 @@ router.put('/:username', async (req,res) => {
     res.json(user)
   } else {
     res.status(404).end()
+  }
+})
+
+router.put('/disable/:id', async (req,res) => {
+  const user = await User.findByPk(req.params.id)
+  user.disabled = req.body.disabled
+  await user.save()
+  if(req.body.disabled === true){
+    await Session.destroy({
+      where: {user_id: user.id }
+    })
+    res.json(user)
+  }else{
+    res.json(user)
   }
 })
 
